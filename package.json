@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "start": "node --env-file .env --experimental-strip-types  --no-warnings  src/server.ts",
+    "dev": "node --env-file .env --experimental-strip-types  --no-warnings --watch src/server.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "fastify": "^5.5.0",
+    "fastify-type-provider-zod": "^5.0.3",
+    "zod": "^4.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2"
+  }
+}
