@@ -21,7 +21,7 @@ export const customersTable = pgTable("customers", {
 
 export const orderTable = pgTable("orders", {
   id: uuid().primaryKey().defaultRandom(),
-  customerId: uuid()
+  customer_id: uuid()
     .references(() => customersTable.id)
     .notNull(),
   order_number: text().notNull(),
@@ -33,7 +33,7 @@ export const orderTable = pgTable("orders", {
 
 export const orderItemsTable = pgTable("order_items", {
   id: uuid().primaryKey().defaultRandom(),
-  orderId: uuid()
+  order_id: uuid()
     .references(() => orderTable.id)
     .notNull(),
   product_name: text().notNull(),
@@ -43,7 +43,7 @@ export const orderItemsTable = pgTable("order_items", {
 
 export const notificationLogsTable = pgTable("notification_logs", {
   id: uuid().primaryKey().defaultRandom(),
-  orderId: uuid()
+  order_id: uuid()
     .references(() => orderTable.id)
     .notNull(),
   old_status: statusEnum("status").notNull(),
