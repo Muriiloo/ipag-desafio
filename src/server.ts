@@ -5,6 +5,7 @@ import {
   validatorCompiler,
   type ZodTypeProvider,
 } from "fastify-type-provider-zod";
+import { createOrderRoute } from "./http/routes/create-order.ts";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -12,12 +13,16 @@ app.register(fastifyCors, {
   origin: "http://localhost:3000",
 });
 
+//Validações nas requisições com Zod
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
 
 app.get("/health", () => {
   return "OK";
 });
+
+//Rotas
+app.register(createOrderRoute);
 
 app.listen({ port: Number(process.env.PORT ?? 3333) }, (err, address) => {
   if (err) {
