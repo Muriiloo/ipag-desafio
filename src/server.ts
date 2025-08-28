@@ -7,6 +7,7 @@ import {
 } from "fastify-type-provider-zod";
 import { createOrderRoute } from "./http/routes/create-order.ts";
 import { getOrderRoute } from "./http/routes/get-order.ts";
+import { connectRabbitMQ } from "./queue/connection.ts";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -26,10 +27,18 @@ app.get("/health", () => {
 app.register(createOrderRoute);
 app.register(getOrderRoute);
 
-app.listen({ port: Number(process.env.PORT ?? 3333) }, (err, address) => {
-  if (err) {
-    console.error(err);
+async function startServer() {
+  try {
+    // Conectar ao RabbitMQ
+    await connectRabbitMQ();
+
+    // Iniciar servidor
+    await app.listen({ port: Number(process.env.PORT ?? 3333) });
+    console.log("Server is running!");
+  } catch (err) {
+    console.error("Error starting server:", err);
     process.exit(1);
   }
-  console.log(`Server is running!`);
-});
+}
+
+startServer();
