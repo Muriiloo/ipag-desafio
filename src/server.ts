@@ -8,6 +8,7 @@ import {
 import { createOrderRoute } from "./http/routes/create-order.ts";
 import { getOrderRoute } from "./http/routes/get-order.ts";
 import { connectRabbitMQ } from "./queue/connection.ts";
+import { updateOrderStatusRoute } from "./http/routes/update-order-status.ts";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -26,6 +27,7 @@ app.get("/health", () => {
 //Rotas
 app.register(createOrderRoute);
 app.register(getOrderRoute);
+app.register(updateOrderStatusRoute);
 
 async function startServer() {
   try {
