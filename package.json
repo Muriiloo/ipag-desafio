@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "node --env-file .env --experimental-strip-types  --no-warnings  src/server.ts",
-    "dev": "node --env-file .env --experimental-strip-types  --no-warnings --watch src/server.ts"
+    "dev": "node --env-file .env --experimental-strip-types  --no-warnings --watch src/server.ts",
+    "worker:dev": "node --env-file .env --experimental-strip-types --no-warnings --watch src/worker/worker.ts"
   },
   "dependencies": {
     "@fastify/cors": "^11.1.0",
