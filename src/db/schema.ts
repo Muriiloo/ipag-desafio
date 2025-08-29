@@ -46,8 +46,8 @@ export const notificationLogsTable = pgTable("notification_logs", {
   order_id: uuid()
     .references(() => orderTable.id)
     .notNull(),
-  old_status: statusEnum("status").notNull(),
-  new_status: statusEnum("status").notNull(),
+  old_status: statusEnum("old_status").notNull(),
+  new_status: statusEnum("new_status").notNull(),
   message: text().notNull(),
   created_at: timestamp().notNull().defaultNow(),
 });
