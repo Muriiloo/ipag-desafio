@@ -5,6 +5,7 @@ import { orderTable } from "../../db/schema.ts";
 import { eq } from "drizzle-orm";
 import { connectRabbitMQ } from "../../queue/connection.ts";
 import { publishOrderStatusUpdate } from "../../queue/producer.ts";
+import { isValidStatusTransition } from "../helpers/order-status-validation.ts";
 
 export const updateOrderStatusRoute: FastifyPluginCallbackZod = (app) => {
   app.put(
@@ -57,6 +58,16 @@ export const updateOrderStatusRoute: FastifyPluginCallbackZod = (app) => {
         //se o status atual for o mesmo do status da rota, retornar erro 400
         if (orderStatus === status) {
           return reply.status(400).send({ message: "Status unchanged", order });
+        }
+
+        if (orderStatus === "delivered") {
+          return reply.status(400).send({ message: "Order already delivered" });
+        }
+
+        if (!isValidStatusTransition(orderStatus, status)) {
+          return reply
+            .status(400)
+            .send({ message: "Invalid status transition" });
         }
 
         //atualizar o status do pedido
