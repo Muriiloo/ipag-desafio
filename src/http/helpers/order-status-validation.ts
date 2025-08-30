@@ -13,21 +13,24 @@ export function isValidStatusTransition(
   currentStatus: string,
   newStatus: string
 ) {
-  //permitir cancelamento de pedidos já entregues
-  if (newStatus === "canceled" && currentStatus !== "delivered") {
-    return true;
+  //nao permitir transições para o mesmo status
+  if (currentStatus === newStatus) {
+    return false;
+  }
+
+  //permitir cancelamento apenas se não estiver entregue ou cancelado
+  if (newStatus === "canceled") {
+    return currentStatus !== "delivered" && currentStatus !== "canceled";
   }
 
   //verificar se os status existem na sequência
-  const currentIndex = STATUS_SEQUENCE.indexOf(currentStatus as any);
-  //verificar se o novo status existe na sequência
-  const newIndex = STATUS_SEQUENCE.indexOf(newStatus as any);
+  const currentIndex = STATUS_SEQUENCE.indexOf(currentStatus);
+  const newIndex = STATUS_SEQUENCE.indexOf(newStatus);
 
-  //verificar se ambos os status existem na sequência
   if (currentIndex === -1 || newIndex === -1) {
     return false;
   }
 
-  //permitir apenas avanço sequencial (próximo status na sequência)
+  //permitir apenas avanço sequencial (exceto cancelamento)
   return newIndex === currentIndex + 1;
 }

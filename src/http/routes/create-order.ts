@@ -1,5 +1,4 @@
 import type { FastifyPluginCallbackZod } from "fastify-type-provider-zod";
-import z from "zod/v4";
 import { db } from "../../db/connection.ts";
 import {
   customersTable,

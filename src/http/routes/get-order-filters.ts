@@ -1,5 +1,4 @@
 import type { FastifyPluginCallbackZod } from "fastify-type-provider-zod";
-import z from "zod/v4";
 import { customersTable, orderTable } from "../../db/schema.ts";
 import { db } from "../../db/connection.ts";
 import { eq, and, gte, lte, ilike, desc } from "drizzle-orm";
