@@ -414,7 +414,7 @@ O projeto utiliza RabbitMQ para processamento assíncrono de notificações:
 - **Motivação**: Type safety, melhor DX, menos bugs em runtime
 - **Benefício**: Autocompletar, refactoring seguro, documentação viva
 
-### 2. **Fastify Framework**
+### 2. **Fastify**
 
 - **Motivação**: Performance superior ao Express, built-in validation
 - **Benefício**: Schema-based validation, serialização otimizada, plugins
@@ -531,15 +531,10 @@ curl http://localhost:3333/orders
 curl http://localhost:3333/orders/summary
 ```
 
-### 3. Verificar Worker
-
-Monitore os logs do worker para ver o processamento das notificações:
-
-```bash
-# Logs do worker
-docker-compose logs -f worker
-```
-
 ---
 
 **Desenvolvido como parte do desafio técnico IPAG** 🚀
+
+```
+
+```
