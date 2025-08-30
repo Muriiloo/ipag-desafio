@@ -2,7 +2,11 @@
   "scripts": {
     "start": "node --env-file .env --experimental-strip-types  --no-warnings  src/server.ts",
     "dev": "node --env-file .env --experimental-strip-types  --no-warnings --watch src/server.ts",
-    "worker:dev": "node --env-file .env --experimental-strip-types --no-warnings --watch src/worker/worker.ts"
+    "worker:dev": "node --env-file .env --experimental-strip-types --no-warnings --watch src/worker/worker.ts",
+    "test": "tsx tests/test-runner.ts",
+    "test:unit": "jest tests/unit",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@fastify/cors": "^11.1.0",
@@ -18,10 +22,15 @@
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.7",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.3.0",
     "@types/pg": "^8.15.5",
+    "@types/supertest": "^6.0.3",
     "@types/swagger-jsdoc": "^6.0.4",
     "drizzle-kit": "^0.31.4",
+    "jest": "^30.1.1",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.1",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }
