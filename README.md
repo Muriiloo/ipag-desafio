@@ -48,6 +48,12 @@ Este projeto implementa um sistema completo de gerenciamento de pedidos com as s
 - **Zod** - Validação de schemas TypeScript
 - **Swagger/OpenAPI** - Documentação automática da API
 
+### Testes
+
+- **Jest** - Framework de testes JavaScript/TypeScript
+- **ts-jest** - Transformer TypeScript para Jest
+- **Supertest** - Testes de APIs HTTP (dependência instalada)
+
 ### Infraestrutura
 
 - **Docker & Docker Compose** - Containerização e orquestração
@@ -60,8 +66,25 @@ Este projeto implementa um sistema completo de gerenciamento de pedidos com as s
 ├── drizzle.config.ts          # Configuração do Drizzle ORM
 ├── package.json               # Dependências e scripts
 ├── tsconfig.json             # Configuração TypeScript
+├── jest.config.js            # Configuração do Jest para testes
 ├── docs/                     # Documentação do projeto
 │   └── TASKS.md             # Lista de tarefas implementadas
+├── tests/                    # Suíte de testes unitários
+│   ├── setup.ts             # Configuração global dos testes
+│   ├── test-runner.ts       # Script customizado para execução
+│   ├── README.md            # Documentação dos testes
+│   ├── utils/               # Utilitários compartilhados
+│   │   └── test-factories.ts # Factories para dados de teste
+│   └── unit/                # Testes unitários
+│       ├── schemas/         # Validação de schemas Zod
+│       │   ├── create-order-schema.test.ts
+│       │   ├── get-order-schema.test.ts
+│       │   ├── get-order-filters-schema.test.ts
+│       │   └── update-order-status-schema.test.ts
+│       └── helpers/         # Funções auxiliares
+│           ├── order-status-validation.test.ts
+│           ├── format-log-timestamp.test.ts
+│           └── validate-payload-msg.test.ts
 └── src/
     ├── server.ts            # Entrada principal da aplicação
     ├── db/                  # Configuração do banco de dados
@@ -147,9 +170,16 @@ npm run worker:dev
 ### Scripts Disponíveis
 
 ```bash
+# Execução da Aplicação
 npm run dev          # Inicia API em modo desenvolvimento
 npm run start        # Inicia API em modo produção
 npm run worker:dev   # Inicia Worker em modo desenvolvimento
+
+# Testes
+npm run test         # Executa todos os testes unitários via test-runner
+npm run test:unit    # Executa apenas testes unitários via Jest
+npm run test:watch   # Executa testes em modo watch
+npm run test:coverage # Executa testes com relatório de cobertura
 ```
 
 ## 📚 Documentação da API
@@ -487,11 +517,34 @@ pending → waiting_payment → paid → processing → shipped → delivered
 
 ## 🚀 Como Testar
 
-### 1. Teste Manual via Swagger
+### 1. Testes Automatizados (Recomendado)
+
+Execute a suíte completa de testes unitários:
+
+```bash
+# Executar todos os testes
+npm run test
+
+# Executar com relatório de cobertura
+npm run test:coverage
+
+# Modo watch para desenvolvimento
+npm run test:watch
+```
+
+**Resultado esperado:**
+
+```
+✅ Tests: 141 passed, 0 failed
+✅ Test Suites: 7 passed, 0 failed
+⏱️  Time: < 10 seconds
+```
+
+### 2. Teste Manual via Swagger
 
 Acesse http://localhost:3333/docs e teste todos os endpoints interativamente.
 
-### 2. Teste de Fluxo Completo
+### 3. Teste de Fluxo Completo
 
 ```bash
 # 1. Criar pedido
