@@ -3,38 +3,14 @@ import z from "zod/v4";
 import { customersTable, orderTable } from "../../db/schema.ts";
 import { db } from "../../db/connection.ts";
 import { eq, and, gte, lte, ilike, desc } from "drizzle-orm";
+import { getOrderFiltersSchema } from "./schemas/get-order-filters-schema.ts";
 
 export const getOrderFiltersRoute: FastifyPluginCallbackZod = (app) => {
   app.get(
     "/orders",
     {
-      //validações de entrada
-      schema: {
-        querystring: z.object({
-          //filtros opcionais
-          status: z
-            .enum([
-              "pending",
-              "waiting_payment",
-              "paid",
-              "processing",
-              "shipped",
-              "delivered",
-              "canceled",
-            ])
-            .optional(),
-          customer_email: z.string().email().optional(),
-          order_number: z.string().optional(),
-
-          //filtros de data
-          created_from: z.string().datetime().optional(),
-          created_to: z.string().datetime().optional(),
-
-          //paginação
-          page: z.string().optional().default("1").transform(Number),
-          limit: z.string().optional().default("10").transform(Number),
-        }),
-      },
+      //validações de entrada + documentação Swagger
+      schema: getOrderFiltersSchema,
     },
     async (request, reply) => {
       try {

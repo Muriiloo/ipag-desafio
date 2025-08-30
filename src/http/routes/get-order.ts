@@ -7,17 +7,14 @@ import {
 } from "../../db/schema.ts";
 import { db } from "../../db/connection.ts";
 import { eq } from "drizzle-orm";
+import { getOrderSchema } from "./schemas/get-order-schema.ts";
 
 export const getOrderRoute: FastifyPluginCallbackZod = (app) => {
   app.get(
     "/order/:id",
     {
       //validar os parametros da rota
-      schema: {
-        params: z.object({
-          id: z.string().uuid("Invalid order id"),
-        }),
-      },
+      schema: getOrderSchema,
     },
     async (request, reply) => {
       try {

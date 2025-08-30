@@ -6,32 +6,13 @@ import { eq } from "drizzle-orm";
 import { connectRabbitMQ } from "../../queue/connection.ts";
 import { publishOrderStatusUpdate } from "../../queue/producer.ts";
 import { isValidStatusTransition } from "../helpers/order-status-validation.ts";
+import { updateOrderStatusSchema } from "./schemas/update-order-status-schema.ts";
 
 export const updateOrderStatusRoute: FastifyPluginCallbackZod = (app) => {
   app.put(
     "/order/:id/status",
     {
-      schema: {
-        //validar o id do pedido
-        params: z.object({
-          id: z.uuid("Invalid order id"),
-        }),
-        //validar o status do pedido
-        body: z.object({
-          status: z.enum(
-            [
-              "pending",
-              "waiting_payment",
-              "paid",
-              "processing",
-              "shipped",
-              "delivered",
-              "canceled",
-            ],
-            "Invalid status"
-          ),
-        }),
-      },
+      schema: updateOrderStatusSchema,
     },
     async (request, reply) => {
       try {

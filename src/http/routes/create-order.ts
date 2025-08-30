@@ -7,43 +7,14 @@ import {
   orderTable,
 } from "../../db/schema.ts";
 import { eq } from "drizzle-orm";
+import { createOrderSchema } from "./schemas/create-order-schema.ts";
 
 export const createOrderRoute: FastifyPluginCallbackZod = (app) => {
   app.post(
     "/order",
     {
       //validações de entrada
-      schema: {
-        body: z.object({
-          customer: z.object({
-            name: z.string().min(3, "Name must be at least 3 characters long"),
-            document: z
-              .string()
-              .min(11, "Document must be at least 11 characters long"),
-            email: z.email("Invalid email"),
-            phone: z
-              .string()
-              .min(11, "Phone must be at least 11 characters long"),
-          }),
-          order: z.object({
-            total_value: z.number().positive("Total value must be positive"),
-            items: z
-              .array(
-                z.object({
-                  product_name: z.string().min(1, "Product name is required"),
-                  quantity: z
-                    .number()
-                    .int()
-                    .positive("Quantity must be positive"),
-                  unit_value: z
-                    .number()
-                    .positive("Unit value must be positive"),
-                })
-              )
-              .min(1, "At least one item is required"),
-          }),
-        }),
-      },
+      schema: createOrderSchema,
     },
     async (request, reply) => {
       const { customer, order } = request.body;
@@ -108,7 +79,7 @@ export const createOrderRoute: FastifyPluginCallbackZod = (app) => {
         });
       } catch (error) {
         console.error(error);
-        return reply.status(500).send({ error: "Internal server error" });
+        throw new Error("Internal server error");
       }
     }
   );
